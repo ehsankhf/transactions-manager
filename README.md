@@ -11,7 +11,7 @@ A sample project for testing the integration with the TrueLayer API.
  - Steps to run in development mode
    1. `docker-compose up`
    2. `npm run start:client`
-   2. `npm start`
+   2. `npm run start:server`
  
 ## Available Scripts
 
@@ -28,7 +28,7 @@ In the project directory, you can run:
 ### Server-side
 
 - `npm start` : Runs the server on port 5000.
-- `npm run test:server` : Launches the test runner in the interactive watch mode.
+- `npm run test:server` : Launches the test runner.
 
 ## License
 
