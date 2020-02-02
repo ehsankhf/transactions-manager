@@ -15,6 +15,17 @@ A sample project for testing the integration with the TrueLayer API.
            1. `database_test` : for the **test** run of the server 
    2. `npm run start:client`
    2. `npm run start:server`
+   
+## Initial configurations for TrueLayer API
+- setup a new user inside TrueLayer API`s website
+- set the api environment as Sandbox
+- receive the client id and secret from the API`s dashboard
+- add a new redirect url as: `http://localhost:5000/auth/transaction` 
+- receive and configure the authentication url
+- copy the example.env file as .env in the root directory, and set the following variables:
+  - TRUE_LAYER_CLIENT_SECRET
+  - TRUE_LAYER_CLIENT_ID
+  - REACT_APP_AUTH_URL
  
 ## Available Scripts
 

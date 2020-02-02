@@ -3,6 +3,9 @@ import Koa from 'koa';
 import cors from '@koa/cors';
 import bodyParser from 'koa-bodyparser';
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 import authRouter from './modules/auth/router';
 import requestsRouter from './modules/requests/router';
 import transactionRouter from './modules/transactions/router';

@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 
-const { dbUrl, dbName } = require('../config').default[process.env.NODE_ENV! || 'test'].mongo;
+const { dbUrl, dbName } = require('../config').default[
+  process.env.NODE_ENV! || 'test'
+].mongo;
 
 class Mongo {
   intialConnectionMaxTries = 10;
