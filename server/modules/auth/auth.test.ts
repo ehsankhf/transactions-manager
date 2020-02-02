@@ -7,7 +7,7 @@ import 'mocha';
 
 import server from '../../server';
 import TrueLayerAPI from '../../common/TrueLayerAPI';
-import {TokensCache} from "../../common/TokensCache";
+import { TokensCache } from '../../common/TokensCache';
 
 const request = supertest(server);
 
