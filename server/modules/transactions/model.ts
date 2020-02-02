@@ -1,49 +1,49 @@
 /* eslint-disable @typescript-eslint/camelcase */
 
-import Sequelize from 'sequelize';
+import { Sequelize, Model, DataTypes, BuildOptions } from 'sequelize';
 import db from '../../common/mysql';
 
-const Transactions = db.define(
-  'transactions',
+class Transactions extends Model {}
+
+Transactions.init(
   {
     id: {
-      type: Sequelize.BIGINT,
+      type: DataTypes.BIGINT,
       autoIncrement: true,
       primaryKey: true
     },
     transaction_id: {
-      type: Sequelize.BIGINT
+      type: DataTypes.STRING
     },
     timestamp: {
-      type: Sequelize.DATE
+      type: DataTypes.DATE
     },
     amount: {
-      type: Sequelize.DECIMAL
+      type: DataTypes.DECIMAL
     },
     currency: {
-      type: Sequelize.STRING
+      type: DataTypes.STRING
     },
     description: {
-      type: Sequelize.STRING
+      type: DataTypes.STRING
     },
     transaction_type: {
-      type: Sequelize.STRING
+      type: DataTypes.STRING
     },
     transaction_category: {
-      type: Sequelize.STRING
+      type: DataTypes.STRING
     },
     running_balance: {
-      type: Sequelize.JSON
+      type: DataTypes.JSON
     },
     meta: {
-      type: Sequelize.JSON
+      type: DataTypes.JSON
     }
   },
   {
-    timestamps: true
+    sequelize: db,
+    tableName: 'transactions'
   }
 );
 
-module.exports = {
-  Transactions
-};
+export default Transactions;

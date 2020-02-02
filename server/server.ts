@@ -39,7 +39,7 @@ app.use(requestsRouter.allowedMethods());
 app.use(transactionRouter.routes());
 app.use(transactionRouter.allowedMethods());
 
-if (process.env.NODE_ENV !== 'test') {
+if (process.env && process.env.NODE_ENV !== 'test') {
   Promise.all([
     mongo.connect(),
     Object.keys(mysql.models).map(modelName => mysql.models[modelName].sync())
