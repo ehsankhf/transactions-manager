@@ -7,6 +7,8 @@ import authRouter from './modules/auth/router';
 import requestsRouter from './modules/requests/router';
 import transactionRouter from './modules/transactions/router';
 
+import mongo from './common/mongo';
+
 const app: Koa = new Koa();
 const PORT = 5000;
 
@@ -37,13 +39,15 @@ app.use(transactionRouter.routes());
 app.use(transactionRouter.allowedMethods());
 
 if (process.env.NODE_ENV !== 'test') {
-  app
-    .listen(PORT, () => {
-      console.log(`Server started on port ${PORT}`);
-    })
-    .on('error', err => {
-      console.error(err);
-    });
+  Promise.all([mongo.connect()]).then(() => {
+    app
+      .listen(PORT, () => {
+        console.log(`Server started on port ${PORT}`);
+      })
+      .on('error', err => {
+        console.error(err);
+      });
+  });
 }
 
 export default server;

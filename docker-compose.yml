@@ -9,6 +9,8 @@ services:
     ports:
       - 27017:27017
     command: mongod --noauth
+    networks:
+      - webappnetwork
   mysql_db:
     image: mysql:5.7
     restart: always
@@ -19,7 +21,11 @@ services:
       MYSQL_ROOT_PASSWORD: pass
     volumes:
       - ./mysql_data:/var/lib/mysql
+    networks:
+      - webappnetwork
 volumes:
   mysql_data:
   mongo_data:
-
+networks:
+  webappnetwork:
+    driver: bridge
