@@ -10,6 +10,9 @@ A sample project for testing the integration with the TrueLayer API.
  
  - Steps to run in development mode
    1. `docker-compose up`
+       - Please create following databases in the locally created mysql database server `localhost:3306` :
+           1. `database_development` : for the **normal** run of the server 
+           1. `database_test` : for the **test** run of the server 
    2. `npm run start:client`
    2. `npm run start:server`
  

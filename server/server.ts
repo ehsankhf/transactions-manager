@@ -8,6 +8,7 @@ import requestsRouter from './modules/requests/router';
 import transactionRouter from './modules/transactions/router';
 
 import mongo from './common/mongo';
+import mysql from './common/mysql';
 
 const app: Koa = new Koa();
 const PORT = 5000;
@@ -39,7 +40,11 @@ app.use(transactionRouter.routes());
 app.use(transactionRouter.allowedMethods());
 
 if (process.env.NODE_ENV !== 'test') {
-  Promise.all([mongo.connect()]).then(() => {
+  Promise.all([
+    mongo.connect(),
+    Object.keys(mysql.models).map(modelName => mysql.models[modelName].sync())
+  ]).then(() => {
+    console.log(Object.keys(mysql.models));
     app
       .listen(PORT, () => {
         console.log(`Server started on port ${PORT}`);

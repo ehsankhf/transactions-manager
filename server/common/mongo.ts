@@ -14,7 +14,7 @@ class Mongo {
 
   async connect(): Promise<any> {
     try {
-      await mongoose.connect(`${dbUrl}lhjk/${dbName}`, {
+      await mongoose.connect(`${dbUrl}/${dbName}`, {
         useNewUrlParser: true,
         autoReconnect: true,
         reconnectTries: 10,
@@ -25,8 +25,9 @@ class Mongo {
       if (
         ++this.intialConnectionCurrentTryIndex < this.intialConnectionMaxTries
       ) {
-        console.info(`MongoDB connection Initial retry (${this.intialConnectionCurrentTryIndex}/${
-            this.intialConnectionMaxTries})`);
+        console.info(
+          `MongoDB connection Initial retry (${this.intialConnectionCurrentTryIndex}/${this.intialConnectionMaxTries})`
+        );
 
         return new Promise(resolve =>
           setTimeout(() => resolve(this.connect()), 2000)
