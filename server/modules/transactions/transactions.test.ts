@@ -7,7 +7,7 @@ import commonTest from '../../common/test';
 
 const request = supertest(server);
 
-describe('Requests', () => {
+describe('Transactions', () => {
   beforeEach(async () => {
     await commonTest.createMySqlDB();
     return commonTest.cleanMySqlDB();

@@ -10,6 +10,7 @@ export default class Common {
   static async cleanMySqlDB() {
     await db.query('SET FOREIGN_KEY_CHECKS = 0');
     await db.query('DELETE FROM `transactions` WHERE TRUE');
+    await db.query('DELETE FROM `users` WHERE TRUE');
     await db.query('SET FOREIGN_KEY_CHECKS = 1');
   }
 }
