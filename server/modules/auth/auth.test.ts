@@ -33,8 +33,8 @@ describe('Auth', () => {
       })
     );
 
-    const res = await request.get('/auth/callback');
-    expect(TokensCache.get(`JWT-ACCESS-TOKEN-HERE`)).to.deep.equal({
+    const res = await request.get('/auth/callback?state=1');
+    expect(TokensCache.get('1')).to.deep.equal({
       access_token: 'JWT-ACCESS-TOKEN-HERE',
       expires_in: 'JWT-EXPIRY-TIME',
       token_type: 'Bearer',
@@ -46,7 +46,10 @@ describe('Auth', () => {
   describe('login', () => {
     it('should receive a token if the user can login', async () => {
       const pass = await bcrypt.hash('myPassword', 10);
-      await UsersRepository.addOne({ username: 'ehsan@ehsan.com', password: pass });
+      await UsersRepository.addOne({
+        username: 'ehsan@ehsan.com',
+        password: pass
+      });
       const res = await request
         .post('/auth/login')
         .send({ username: 'ehsan@ehsan.com', password: 'myPassword' });
@@ -60,13 +63,15 @@ describe('Auth', () => {
       expect(res.body).to.deep.equal({ message: 'Authentication failed' });
     });
 
-
     it('should fail if the entered values are invalid', async () => {
       const pass = await bcrypt.hash('myPassword', 10);
-      await UsersRepository.addOne({ username: 'ehsan@ehsan.com', password: pass });
+      await UsersRepository.addOne({
+        username: 'ehsan@ehsan.com',
+        password: pass
+      });
       const res = await request
-          .post('/auth/login')
-          .send({ username: 'ehsan1@ehsan.com', password: '1' });
+        .post('/auth/login')
+        .send({ username: 'ehsan1@ehsan.com', password: '1' });
       expect(res.body).to.deep.equal({ message: 'Authentication failed' });
     });
   });
@@ -74,10 +79,12 @@ describe('Auth', () => {
   describe('register', () => {
     it('should register the user successfully the the right email and password', async () => {
       const res = await request
-          .post('/auth/register')
-          .send({ username: 'ehsan@ehsan.com', password: 'myPassword' });
+        .post('/auth/register')
+        .send({ username: 'ehsan@ehsan.com', password: 'myPassword' });
 
-      expect(res.body).to.have.property('token');
+      expect(res.body).to.deep.equal({
+        message: 'Successfully registered!'
+      });
     });
 
     it('should fail if the user is duplicated', async () => {
@@ -87,8 +94,8 @@ describe('Auth', () => {
         password: pass
       });
       const res = await request
-          .post('/auth/register')
-          .send({ username: 'ehsan@ehsan.com', password: 'myPassword' });
+        .post('/auth/register')
+        .send({ username: 'ehsan@ehsan.com', password: 'myPassword' });
 
       expect(res.status).to.equal(400);
       expect(res.body).to.deep.equal({ message: 'Registration failed' });
@@ -96,8 +103,8 @@ describe('Auth', () => {
 
     it('should fail if the entered values are invalid', async () => {
       const res = await request
-          .post('/auth/register')
-          .send({ username: 'ehsan@ehsan.com', password: '1' });
+        .post('/auth/register')
+        .send({ username: 'ehsan@ehsan.com', password: '1' });
 
       expect(res.status).to.equal(400);
       expect(res.body).to.deep.equal({ message: 'Registration failed' });

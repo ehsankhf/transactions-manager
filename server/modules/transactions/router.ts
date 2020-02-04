@@ -2,6 +2,7 @@ import Koa from 'koa';
 import Router from 'koa-router';
 
 import TransactionsRepository from './repository';
+import koaJwt from '../../common/koaJwt';
 
 const routerOpts: Router.IRouterOptions = {
   prefix: '/transactions'
@@ -9,7 +10,7 @@ const routerOpts: Router.IRouterOptions = {
 
 const router: Router = new Router(routerOpts);
 
-router.get('/', async (ctx: Koa.Context) => {
+router.get('/', koaJwt, async (ctx: Koa.Context) => {
   /* eslint-disable @typescript-eslint/camelcase */
   const transactions = [
     {

@@ -7,6 +7,8 @@ import validate from 'validate.js';
 import TrueLayerAPI from '../../common/TrueLayerAPI';
 import { TokensCache } from '../../common/TokensCache';
 import UsersRepository from './repository';
+import koaJwt from '../../common/koaJwt';
+import loadUserFromToken from '../../common/loadUserFromToken';
 
 const constraints = {
   username: {
@@ -29,12 +31,19 @@ const routerOpts: Router.IRouterOptions = {
 const router: Router = new Router(routerOpts);
 
 router.get('/callback', async (ctx: Koa.Context) => {
-  const code: string = ctx.request.query.code;
+  const { code, state } = ctx.request.query;
 
   const response = await TrueLayerAPI.exchangeCode(code);
-  TokensCache.set(response.access_token, response);
 
-  ctx.redirect('http://localhost:3000/login');
+  TokensCache.set(state, response);
+
+  ctx.body = {
+    message: 'Token is set successfully'
+  };
+});
+
+router.get('/setToken', koaJwt, loadUserFromToken, async (ctx: Koa.Context) => {
+  ctx.redirect(`${process.env.TRUE_LAYER_AUTH_LINK}&state=${ctx.user.id}`);
 });
 
 router.post('/login', async (ctx: Koa.Context) => {
@@ -45,11 +54,10 @@ router.post('/login', async (ctx: Koa.Context) => {
     const user = await UsersRepository.getOneByUsername(username);
     if (user) {
       const result = await bcrypt.compare(password, user.password);
-      console.log(user, result);
       if (result) {
         ctx.status = 200;
         ctx.body = {
-          token: jwt.sign({ username }, process.env.JWT_SECRET || 'test'),
+          token: jwt.sign({ username, id: user.id }, process.env.JWT_SECRET || 'test'),
           message: 'Successfully logged in!'
         };
         return;
@@ -72,11 +80,10 @@ router.post('/register', async (ctx: Koa.Context) => {
     const user = await UsersRepository.getOneByUsername(username);
     if (!user) {
       const pass = await bcrypt.hash(password, 10);
-      await UsersRepository.addOne({ username, password });
+      await UsersRepository.addOne({ username, password: pass });
 
       ctx.status = 200;
       ctx.body = {
-        token: jwt.sign({ username }, process.env.JWT_SECRET || 'test'),
         message: 'Successfully registered!'
       };
       return;

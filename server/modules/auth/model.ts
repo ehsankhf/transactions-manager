@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import db from '../../common/mysql';
+import Transactions from '../transactions/model';
 
 class Users extends Model {}
 
@@ -30,5 +31,7 @@ Users.init(
     ]
   }
 );
+
+Users.hasMany(Transactions, { sourceKey: 'id', foreignKey: 'user_id' });
 
 export default Users;

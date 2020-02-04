@@ -12,6 +12,9 @@ Transactions.init(
       autoIncrement: true,
       primaryKey: true
     },
+    user_id: {
+      type: DataTypes.BIGINT
+    },
     transaction_id: {
       type: DataTypes.STRING
     },
