@@ -45,7 +45,13 @@ Transactions.init(
   },
   {
     sequelize: db,
-    tableName: 'transactions'
+    tableName: 'transactions',
+    indexes: [
+      {
+        unique: true,
+        fields: ['transaction_id', 'user_id']
+      }
+    ]
   }
 );
 

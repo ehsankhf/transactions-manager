@@ -51,7 +51,7 @@ export default class TrueLayerAPI {
 
   static async getAccounts(accessToken: string) {
     const requestOptions: request.Options = {
-      uri: 'https://api.truelayer-sandbox.com.com/data/v1/accounts',
+      uri: 'https://api.truelayer-sandbox.com/data/v1/accounts',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         Authorization: `Bearer ${accessToken}`
@@ -61,7 +61,7 @@ export default class TrueLayerAPI {
     // eslint-disable-next-line no-useless-catch
     try {
       const response: string = await request.get(requestOptions);
-      return JSON.parse(response);
+      return JSON.parse(response).results;
     } catch (error) {
       throw error;
     }
@@ -69,7 +69,7 @@ export default class TrueLayerAPI {
 
   static async getTransactions(accessToken: string, accountId: string) {
     const requestOptions: request.Options = {
-      uri: `https://api.truelayer-sandbox.com.com/data/v1/accounts/${accountId}/transactions`,
+      uri: `https://api.truelayer-sandbox.com/data/v1/accounts/${accountId}/transactions`,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         Authorization: `Bearer ${accessToken}`
@@ -79,7 +79,7 @@ export default class TrueLayerAPI {
     // eslint-disable-next-line no-useless-catch
     try {
       const response: string = await request.get(requestOptions);
-      return JSON.parse(response);
+      return JSON.parse(response).results;
     } catch (error) {
       throw error;
     }

@@ -12,4 +12,5 @@ export interface Transaction {
     amount: number;
   };
   meta: object;
+  user_id?: number;
 }

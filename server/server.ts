@@ -47,7 +47,6 @@ if (process.env && process.env.NODE_ENV !== 'test') {
     mongo.connect(),
     Object.keys(mysql.models).map(modelName => mysql.models[modelName].sync())
   ]).then(() => {
-    console.log(Object.keys(mysql.models));
     app
       .listen(PORT, () => {
         console.log(`Server started on port ${PORT}`);

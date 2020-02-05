@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/camelcase */
+
 import Transactions from './model';
 import { Transaction } from '../../types/Transaction';
 
@@ -6,7 +8,7 @@ export default class TransactionsRepository {
     return Transactions.bulkCreate(transactions);
   }
 
-  static async getAll() {
-    return Transactions.findAll();
+  static async getAll(userId: string): Promise<any> {
+    return Transactions.findAll({ where: { user_id: userId } });
   }
 }

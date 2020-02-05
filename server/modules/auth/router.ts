@@ -9,6 +9,7 @@ import { TokensCache } from '../../common/TokensCache';
 import UsersRepository from './repository';
 import koaJwt from '../../common/koaJwt';
 import loadUserFromToken from '../../common/loadUserFromToken';
+import { Token } from '../../types/Token';
 
 const constraints = {
   username: {
@@ -33,8 +34,8 @@ const router: Router = new Router(routerOpts);
 router.get('/callback', async (ctx: Koa.Context) => {
   const { code, state } = ctx.request.query;
 
-  const response = await TrueLayerAPI.exchangeCode(code);
-
+  const response: Token = await TrueLayerAPI.exchangeCode(code);
+  response.expiresAtMs = new Date().getTime() + response.expires_in * 1000;
   TokensCache.set(state, response);
 
   ctx.body = {
@@ -43,7 +44,7 @@ router.get('/callback', async (ctx: Koa.Context) => {
 });
 
 router.get('/setToken', koaJwt, loadUserFromToken, async (ctx: Koa.Context) => {
-  ctx.redirect(`${process.env.TRUE_LAYER_AUTH_LINK}&state=${ctx.user.id}`);
+  ctx.redirect(process.env.TRUE_LAYER_AUTH_LINK + '&state=' + 1);
 });
 
 router.post('/login', async (ctx: Koa.Context) => {
@@ -57,7 +58,10 @@ router.post('/login', async (ctx: Koa.Context) => {
       if (result) {
         ctx.status = 200;
         ctx.body = {
-          token: jwt.sign({ username, id: user.id }, process.env.JWT_SECRET || 'test'),
+          token: jwt.sign(
+            { username, id: user.id },
+            process.env.JWT_SECRET || 'test'
+          ),
           message: 'Successfully logged in!'
         };
         return;
