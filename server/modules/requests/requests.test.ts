@@ -12,11 +12,13 @@ import commonTest from '../../common/test';
 import mongo from '../../common/mongo';
 import { RequestsService } from './service';
 import UsersRepository from '../auth/repository';
+import {TokensCache} from "../../common/TokensCache";
 
 const request = supertest(server);
 
 describe('RequestsService', () => {
   beforeEach(async () => {
+    TokensCache.clear();
     await mongo.connect();
     await mongo.removeAll();
     await commonTest.createMySqlDB();

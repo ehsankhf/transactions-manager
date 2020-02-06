@@ -13,16 +13,22 @@ import UsersRepository from '../auth/repository';
 import TrueLayerAPI from '../../common/TrueLayerAPI';
 import { TokensCache } from '../../common/TokensCache';
 import { Transaction } from '../../types/Transaction';
+import mongo from '../../common/mongo';
 
 const request = supertest(server);
 
 describe('Transactions', () => {
   beforeEach(async () => {
-    await commonTest.createMySqlDB();
-    await commonTest.cleanMySqlDB();
     TokensCache.clear();
+    await mongo.connect();
+    await mongo.removeAll();
+    await commonTest.createMySqlDB();
+    return commonTest.cleanMySqlDB();
   });
+
   afterEach(async () => {
+    await mongo.removeAll();
+    await mongo.disconnect();
     server.close();
   });
 

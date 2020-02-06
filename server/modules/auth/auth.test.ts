@@ -11,16 +11,22 @@ import TrueLayerAPI from '../../common/TrueLayerAPI';
 import { TokensCache } from '../../common/TokensCache';
 import UsersRepository from './repository';
 import commonTest from '../../common/test';
+import mongo from '../../common/mongo';
 
 const request = supertest(server);
 
 describe('Auth', () => {
   beforeEach(async () => {
+    TokensCache.clear();
+    await mongo.connect();
+    await mongo.removeAll();
     await commonTest.createMySqlDB();
     return commonTest.cleanMySqlDB();
   });
 
   afterEach(async () => {
+    await mongo.removeAll();
+    await mongo.disconnect();
     server.close();
   });
 
