@@ -20,10 +20,11 @@ A sample project for testing the integration with the TrueLayer API.
 - set the api environment as Sandbox
 - receive the client id and secret from the API`s dashboard
 - add a new redirect url as: `http://localhost:5000/auth/callback` 
-- receive and configure the authentication url in env variable: TRUE_LAYER_AUTH_LINK
 - copy the example.env file as .env in the root directory, and set the following variables:
   - TRUE_LAYER_CLIENT_SECRET
   - TRUE_LAYER_CLIENT_ID
+- receive and configure the authentication url in env variable: TRUE_LAYER_AUTH_LINK
+
  
 ## Available Scripts
 
