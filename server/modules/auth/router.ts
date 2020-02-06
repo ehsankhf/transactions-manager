@@ -35,7 +35,7 @@ router.get('/callback', async (ctx: Koa.Context) => {
   const { code, state } = ctx.request.query;
 
   const response: Token = await TrueLayerAPI.exchangeCode(code);
-  response.expiresAtMs = new Date().getTime() + 2 * 1000;
+  response.expiresAtMs = new Date().getTime() + response.expires_in * 1000;
   TokensCache.set(state, response);
 
   ctx.body = {
