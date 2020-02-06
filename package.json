@@ -35,13 +35,10 @@
     "validate.js": "^0.13.1"
   },
   "scripts": {
-    "start:server-dev": "NODE_ENV=development nodemon",
-    "start:client-dev": "react-scripts start",
-    "build:server": "tsc -b server-tsconfig.json",
-    "build:client": "react-scripts build",
-    "test:server": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\", \"target\": \"ES2017\"}' mocha --require ts-node/register server/**/*.test.ts",
-    "test:client": "react-scripts test",
-    "serve:server": "ts-node --project server-tsconfig.json server/server.ts",
+    "start": "NODE_ENV=development nodemon",
+    "build": "tsc -b tsconfig.json",
+    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\", \"target\": \"ES2017\"}' mocha --require ts-node/register server/**/*.test.ts",
+    "serve": "ts-node --project tsconfig.json server/server.ts",
     "lint:fix": "eslint './{src,server}/**/*.{ts,tsx}' --fix"
   },
   "eslintConfig": {
