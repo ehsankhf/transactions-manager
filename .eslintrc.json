@@ -1,20 +1,17 @@
 {
   "extends": [
     "eslint:recommended",
-    "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
     "prettier/@typescript-eslint",
     "plugin:prettier/recommended"
   ],
   "plugins": [
-    "react",
     "@typescript-eslint",
     "prettier"
   ],
   "env": {
     "browser": true,
     "jasmine": true,
-    "jest": true,
     "node": true,
     "commonjs": true,
     "es6": true
@@ -29,11 +26,6 @@
     "@typescript-eslint/no-empty-interface": 1,
     "no-empty-pattern": 0
   },
-  "settings": {
-    "react": {
-      "pragma": "React",
-      "version": "detect"
-    }
-  },
+  "settings": {},
   "parser": "@typescript-eslint/parser"
 }
