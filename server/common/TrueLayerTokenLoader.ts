@@ -18,6 +18,7 @@ export default async (ctx: Koa.Context, next: () => Promise<any>) => {
       return next();
     }
   }
+
   ctx.status = 401;
   ctx.body = {
     message: 'Please request for setting the token'

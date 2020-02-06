@@ -12,6 +12,7 @@ import transactionRouter from './modules/transactions/router';
 
 import mongo from './common/mongo';
 import mysql from './common/mysql';
+import { RequestsService } from './modules/requests/service';
 
 const app: Koa = new Koa();
 const PORT = 5000;
@@ -22,12 +23,13 @@ app.use(cors());
 app.use(async (ctx: Koa.Context, next: () => Promise<any>) => {
   await next();
   const rt = ctx.response.get('X-Response-Time');
-  console.log(`${ctx.method} ${ctx.url} - ${rt}`);
+  console.info(`${ctx.method} ${ctx.url} - ${rt}`);
 });
 
 app.use(async (ctx: Koa.Context, next: () => Promise<any>) => {
   const start = Date.now();
   await next();
+  await RequestsService.addOne(ctx.request.href, ctx.body, ctx.status);
   const ms = Date.now() - start;
   ctx.set('X-Response-Time', `${ms}ms`);
 });
@@ -49,7 +51,7 @@ if (process.env && process.env.NODE_ENV !== 'test') {
   ]).then(() => {
     app
       .listen(PORT, () => {
-        console.log(`Server started on port ${PORT}`);
+        console.info(`Server started on port ${PORT}`);
       })
       .on('error', err => {
         console.error(err);

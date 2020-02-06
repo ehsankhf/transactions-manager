@@ -16,7 +16,7 @@ import { Transaction } from '../../types/Transaction';
 
 const request = supertest(server);
 
-describe.only('Transactions', () => {
+describe('Transactions', () => {
   beforeEach(async () => {
     await commonTest.createMySqlDB();
     await commonTest.cleanMySqlDB();

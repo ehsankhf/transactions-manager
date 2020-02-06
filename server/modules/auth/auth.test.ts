@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
+
 import supertest from 'supertest';
 import { expect } from 'chai';
 import sinon from 'sinon';
@@ -27,16 +28,28 @@ describe('Auth', () => {
     const exchangeCodeStub = sinon.stub(TrueLayerAPI, 'exchangeCode').returns(
       Promise.resolve({
         access_token: 'JWT-ACCESS-TOKEN-HERE',
-        expires_in: 'JWT-EXPIRY-TIME',
+        expires_in: 123,
         token_type: 'Bearer',
+        expiresAtMs: 122,
         refresh_token: 'REFRESH-TOKEN-HERE'
       })
     );
 
-    const res = await request.get('/auth/callback?state=1');
-    expect(TokensCache.get('1')).to.deep.equal({
+    await request.get('/auth/callback?state=1');
+    const {
+      access_token,
+      expires_in,
+      token_type,
+      refresh_token
+    }: any = TokensCache.get('1');
+    expect({
+      access_token,
+      expires_in,
+      token_type,
+      refresh_token
+    }).to.deep.equal({
       access_token: 'JWT-ACCESS-TOKEN-HERE',
-      expires_in: 'JWT-EXPIRY-TIME',
+      expires_in: 123,
       token_type: 'Bearer',
       refresh_token: 'REFRESH-TOKEN-HERE'
     });
