@@ -9,6 +9,6 @@ export default class TransactionsRepository {
   }
 
   static async getAll(userId: string): Promise<any> {
-    return Transactions.findAll({ where: { user_id: userId } });
+    return Transactions.findAll({ where: { user_id: userId }, raw: true });
   }
 }

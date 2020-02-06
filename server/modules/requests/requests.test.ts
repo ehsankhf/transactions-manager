@@ -10,13 +10,13 @@ import server from '../../server';
 
 import commonTest from '../../common/test';
 import mongo from '../../common/mongo';
-import { RequestsService } from './service';
+import { RequestsRepository } from './repository';
 import UsersRepository from '../auth/repository';
-import {TokensCache} from "../../common/TokensCache";
+import { TokensCache } from '../../common/TokensCache';
 
 const request = supertest(server);
 
-describe('RequestsService', () => {
+describe('RequestsRepository', () => {
   beforeEach(async () => {
     TokensCache.clear();
     await mongo.connect();
@@ -37,7 +37,7 @@ describe('RequestsService', () => {
       .send({ username: 'ehsan1@ehsan.com', password: 'myPassword' });
     expect(authRes.body).to.deep.equal({ message: 'Authentication failed' });
 
-    const requests: any = await RequestsService.getAll();
+    const requests: any = await RequestsRepository.getAll();
     expect(requests.length).to.equal(1);
     expect(requests[0].status).to.equal(401);
     expect(requests[0].url).to.include('/auth/login');
@@ -46,7 +46,7 @@ describe('RequestsService', () => {
     });
   });
 
-  it('should fail if the user is not registered', async () => {
+  it('should NOT fail if the user is registered', async () => {
     const pass = await bcrypt.hash('myPassword', 10);
     await UsersRepository.addOne({
       username: 'ehsan@ehsan.com',

@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import * as request from 'request-promise';
+import { Token } from '../types/Token';
+import { Transaction } from '../types/Transaction';
 
 export default class TrueLayerAPI {
-  static async exchangeCode(code: string): Promise<any> {
+  static async exchangeCode(code: string): Promise<Token> {
     const requestOptions: request.Options = {
       uri: `https://auth.truelayer-sandbox.com/connect/token`,
       headers: {
@@ -26,7 +28,7 @@ export default class TrueLayerAPI {
     }
   }
 
-  static async renewToken(refreshToken: string) {
+  static async renewToken(refreshToken: string): Promise<Token> {
     const requestOptions: request.Options = {
       uri: 'https://auth.truelayer-sandbox.com/connect/token',
       headers: {
@@ -49,7 +51,7 @@ export default class TrueLayerAPI {
     }
   }
 
-  static async getAccounts(accessToken: string) {
+  static async getAccounts(accessToken: string): Promise<Array<Account>> {
     const requestOptions: request.Options = {
       uri: 'https://api.truelayer-sandbox.com/data/v1/accounts',
       headers: {
@@ -67,7 +69,10 @@ export default class TrueLayerAPI {
     }
   }
 
-  static async getTransactions(accessToken: string, accountId: string) {
+  static async getTransactions(
+    accessToken: string,
+    accountId: string
+  ): Promise<Array<Transaction>> {
     const requestOptions: request.Options = {
       uri: `https://api.truelayer-sandbox.com/data/v1/accounts/${accountId}/transactions`,
       headers: {

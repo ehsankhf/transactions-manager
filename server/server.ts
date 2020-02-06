@@ -12,7 +12,7 @@ import transactionRouter from './modules/transactions/router';
 
 import mongo from './common/mongo';
 import mysql from './common/mysql';
-import { RequestsService } from './modules/requests/service';
+import { RequestsRepository } from './modules/requests/repository';
 
 const app: Koa = new Koa();
 const PORT = 5000;
@@ -29,14 +29,14 @@ app.use(async (ctx: Koa.Context, next: () => Promise<any>) => {
 app.use(async (ctx: Koa.Context, next: () => Promise<any>) => {
   const start = Date.now();
   await next();
-  await RequestsService.addOne(ctx.request.href, ctx.body, ctx.status);
+  console.log(ctx.request.href, ctx.body, ctx.status);
+  await RequestsRepository.addOne(ctx.request.href, ctx.body, ctx.status);
   const ms = Date.now() - start;
   ctx.set('X-Response-Time', `${ms}ms`);
 });
 
 const server = http.createServer(app.callback());
 
-// Route middleware.
 app.use(authRouter.routes());
 app.use(authRouter.allowedMethods());
 app.use(requestsRouter.routes());

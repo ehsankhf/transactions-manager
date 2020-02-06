@@ -7,8 +7,8 @@ import validate from 'validate.js';
 import TrueLayerAPI from '../../common/TrueLayerAPI';
 import { TokensCache } from '../../common/TokensCache';
 import UsersRepository from './repository';
-import koaJwt from '../../common/koaJwt';
-import loadUserFromToken from '../../common/loadUserFromToken';
+import koaJwt from '../../common/KoaJwt';
+import loadUserFromToken from '../../common/LoadUserFromToken';
 import { Token } from '../../types/Token';
 
 const constraints = {
@@ -35,7 +35,7 @@ router.get('/callback', async (ctx: Koa.Context) => {
   const { code, state } = ctx.request.query;
 
   const response: Token = await TrueLayerAPI.exchangeCode(code);
-  response.expiresAtMs = new Date().getTime() + response.expires_in * 1000;
+  response.expiresAtMs = new Date().getTime() + 2 * 1000;
   TokensCache.set(state, response);
 
   ctx.body = {

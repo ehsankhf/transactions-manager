@@ -4,10 +4,10 @@ import Koa from 'koa';
 import Router from 'koa-router';
 
 import TransactionsRepository from './repository';
-import koaJwt from '../../common/koaJwt';
+import koaJwt from '../../common/KoaJwt';
 import TrueLayerAPI from '../../common/TrueLayerAPI';
 import { TokensCache } from '../../common/TokensCache';
-import loadUserFromToken from '../../common/loadUserFromToken';
+import loadUserFromToken from '../../common/LoadUserFromToken';
 import { Account } from '../../types/Account';
 import { Transaction } from '../../types/Transaction';
 import TrueLayerTokenLoader from '../../common/TrueLayerTokenLoader';
@@ -37,7 +37,10 @@ async function getTransactionsForAllAccounts(
   accessToken: string
 ): Promise<Array<Array<Transaction>>> {
   const results = await TrueLayerAPI.getAccounts(accessToken);
+
   return Promise.all(
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
     results.map((accountInfo: Account) =>
       TrueLayerAPI.getTransactions(accessToken, accountInfo.account_id)
     )

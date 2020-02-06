@@ -4,6 +4,16 @@ export interface Account {
   account_type: string;
   display_name: string;
   currency: string;
-  account_number: Array<any>;
-  provider: Array<any>;
+  account_number: {
+    iban?: string;
+    number?: string;
+    sort_code?: string;
+    swift_bi: string;
+    blz?: string;
+  };
+  provider: {
+    display_name: string;
+    logo_uri: string;
+    provider_id: string;
+  };
 }
